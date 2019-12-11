@@ -4,8 +4,6 @@ function Get-NewCSVRemoteIndexer(){
 
 class CSVRemoteIndexer {
 
-    [System.Collections.ArrayList]$exportFile = @() 
-
     CSVRemoteIndexer(){
     
     }
@@ -15,26 +13,28 @@ class CSVRemoteIndexer {
     }
 
     [Array] getDomainsFromSourceFile($file){
+        [System.Collections.ArrayList]$exportFile = @()
         $csvIndexDomains += $file | where-object {
             $_.Values -Match "(?:^@)([A-Za-z0-9.-]+\.[A-Za-z]{2,}\b)"
         }
 
         for ($i=0; $i -le ($csvIndexDomains.Count-1); $i++) {
-            $this.exportFile.Add(($i,($csvIndexDomains[$i]).Values))
+            $exportFile.Add(($i,($csvIndexDomains[$i]).Values.Replace("@","")))
         }
         
-        return $this.exportFile
+        return $exportFile
     }
 
     [Array] getEmailsFromSourceFile($file){
+        [System.Collections.ArrayList]$exportFile = @()
         $csvIndexEmails = $file | where-object {
-            $_.Values -Match "^(?!.*this_is_the)^(\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b)" 
+            $_.Values -Match "^(?!this_is_the)^(\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b)" 
         }
         for ($i=0; $i -le ($csvIndexEmails.Count-1); $i++) {
-            $this.exportFile.Add(($i,($csvIndexEmails[$i]).Values))
+            $exportFile.Add(($i,($csvIndexEmails[$i]).Values))
         }
         
-        return $this.exportFile
+        return $exportFile
     }
 
     indexer($input, $indexProfileName, $indexDestinationFolder){
@@ -45,6 +45,6 @@ class CSVRemoteIndexer {
 
         $outputLog = $outputsplit[0] , $outputsplit[1]
 
-        Write-Output $outputLog | set-content "Result_$indexProfileName.log"
+        Write-Output $outputLog | set-content "$Global:resourcespath\Result_$indexProfileName.log"
     }
 }

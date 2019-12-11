@@ -30,7 +30,7 @@ Import-Module -Force "$resourcespath\CSVRemoteIndexer.psm1"
 $csvIndexing = Get-NewCSVRemoteIndexer
 $csv = $csvIndexing.importFile($file)
 $inputDomains = $csvIndexing.getDomainsFromSourceFile($csv)
-$inputEmails = $csvIndexing.getDomainsFromSourceFile($csv)
+$inputEmails = $csvIndexing.getEmailsFromSourceFile($csv)
 $csvIndexing.indexer($inputDomains, "domainexceptions", $indexDestinationFolder)
 $csvIndexing.indexer($inputEmails, "emailexceptions", $indexDestinationFolder)
 
