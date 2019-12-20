@@ -24,34 +24,39 @@ class CSVRemoteIndexer {
     }
 
     [Array] getDomainsFromSourceFile($file){
-        [System.Collections.ArrayList]$exportFile = @()
-        $csvIndexDomains += $file | where-object {
-            $_.Values -Match "(?:^@)([A-Za-z0-9.-]+\.[A-Za-z]{2,}\b)"
+        $csvIndex = @()
+        $i = 0
+        $file | where-object {
+            $_.Values -Match "(?<=^@)[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b" | 
+            foreach-Object{
+                if($_ -ne $false){
+                    $csvIndex += [PSCustomObject]@{
+                        Name = $i
+                        Value = $Matches[0]
+                    }
+                    $i++
+                }
+            }
         }
-
-        for ($i=0; $i -le ($csvIndexDomains.Count-1); $i++){
-            $exportFile.Add([PSCustomObject]@{
-                                ID = $i
-                                Value = ($csvIndexDomains[$i]).Values.Replace("@","")
-            })
-        }
-
-        return $exportfile | convertto-csv -notypeinformation -Delimiter "|" | ForEach-Object {$_ -replace '"',''} 
+        return $csvIndex | convertto-csv -notypeinformation -Delimiter "|" | ForEach-Object {$_ -replace '"',''} 
     }
 
     [Array] getEmailsFromSourceFile($file){
-        [System.Collections.ArrayList]$exportFile = @()
-        $csvIndexEmails = $file | where-object {
-            $_.Values -Match "^(?!this_is_the)^(\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b)" 
+        $csvIndex = @()
+        $i = 0
+        $file | where-object {
+            $_.Values -Match "^(?!this_is_the)^(\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b)" | 
+            foreach-Object{
+                if($_ -ne $false){
+                    $csvIndex += [PSCustomObject]@{
+                        Name = $i
+                        Value = $Matches[0]
+                    }
+                    $i++
+                }
+            }
         }
-        for ($i=0; $i -le ($csvIndexEmails.Count-1); $i++){
-            $exportFile.Add([PSCustomObject]@{
-                                ID = $i
-                                Value = ($csvIndexEmails[$i]).Values.Replace("@","")
-            })
-        }
-
-        return $exportfile | convertto-csv -notypeinformation -Delimiter "|" | ForEach-Object {$_ -replace '"',''} 
+        return $csvIndex | convertto-csv -notypeinformation -Delimiter "|" | ForEach-Object {$_ -replace '"',''}
     }
 
     indexer($input, $indexProfileName, $indexDestinationFolder){
