@@ -1,6 +1,6 @@
 Param(
-    [Parameter(Mandatory=$true, HelpMessage = "Please enter File Path?")]
-    [String]$file,
+    [Parameter(Mandatory=$true, HelpMessage = "Please enter CSV Input Directory e.g. C:\Temp")]
+    [String]$csvInputFolder,
 
     [Parameter(Mandatory=$true, HelpMessage = "Please enter File Path Indexing Destination?")]
     [String]$indexDestinationFolder
@@ -28,7 +28,7 @@ Import-Module -Force "$resourcespath\CSVRemoteIndexer.psm1"
 "$(Get-Date) [START] script" >> $Global:logFile
 
 $csvIndexing = Get-NewCSVRemoteIndexer
-$csv = $csvIndexing.importFile($file)
+$csv = $csvIndexing.importFile($csvInputFolder)
 $inputDomains = $csvIndexing.getDomainsFromSourceFile($csv)
 $inputEmails = $csvIndexing.getEmailsFromSourceFile($csv)
 $csvIndexing.indexer($inputDomains, "domainexceptions", $indexDestinationFolder)
