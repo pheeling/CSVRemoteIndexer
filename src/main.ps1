@@ -31,8 +31,8 @@ $csvIndexing = Get-NewCSVRemoteIndexer
 $csv = $csvIndexing.importFile($csvInputFolder)
 $inputDomains = $csvIndexing.getDomainsFromSourceFile($csv)
 $inputEmails = $csvIndexing.getEmailsFromSourceFile($csv)
-$csvIndexing.indexer($inputDomains, "domainexceptions", $indexDestinationFolder)
-$csvIndexing.indexer($inputEmails, "emailexceptions", $indexDestinationFolder)
+$csvIndexing.indexer($inputDomains, "DomainExceptions", $indexDestinationFolder)
+$csvIndexing.indexer($inputEmails, "EmailExceptions", $indexDestinationFolder)
 
 "$(Get-Date) [STOP] script" >> $Global:logFile
 
