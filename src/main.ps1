@@ -36,4 +36,6 @@ $csvIndexing.indexer($inputEmails, "EmailExceptions", $indexDestinationFolder)
 $csvIndexing.csvFileRetention($csvInputFolder)
 
 "$(Get-Date) [STOP] script" >> $Global:logFile
-
+if ((Get-ChildItem -path $Global:logfile).Length -gt 5242880) {
+    Remove-Item -Path $Global:logFile
+}

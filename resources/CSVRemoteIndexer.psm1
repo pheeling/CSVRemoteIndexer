@@ -60,15 +60,19 @@ class CSVRemoteIndexer {
     }
 
     indexer($input, $indexProfileName, $indexDestinationFolder){
-        $cmdoutput = $input | & 'D:\app\SymantecDLP\Protect\bin\RemoteEDMIndexer.exe' "-profile='$indexProfileName'" "-ignore_date" "-result='$indexDestinationFolder'" "-verbose" 2>&1
-        $outputsplit = $cmdoutput.split("[")
-        $outputsplit = $outputsplit.split("],")
-        $outputsplit = $outputsplit.split(";")
+        try{
+            $cmdoutput = $input | & 'D:\app\SymantecDLP\Protect\bin\RemoteEDMIndexer.exe' "-profile='$Global:resourcespath\$indexProfileName.edm'" "-ignore_date" "-result='$indexDestinationFolder'" "-verbose" 2>&1
+            $outputsplit = $cmdoutput.split("[")
+            $outputsplit = $outputsplit.split("],")
+            $outputsplit = $outputsplit.split(";")
 
-        $outputLog = $outputsplit[0]
+            $outputLog = $outputsplit[0]
 
-        $indexProfileName = ($indexProfileName.Replace("\","-")).Replace(":","-")
-        Write-Output $outputLog | set-content "$Global:resourcespath\Result_$indexProfileName.log"
+            $indexProfileName = ($indexProfileName.Replace("\","-")).Replace(":","-")
+            "$(Get-Date) [Indexing] $indexProfileName :: $outputlog" >> $Global:logfile
+        } catch {
+            "$(Get-Date) [Indexing] $PSitem error with File indexing" >> $Global:logfile
+        }
     }
 
     csvFileRetention($inputFolder){
