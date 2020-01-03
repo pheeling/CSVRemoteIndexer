@@ -70,4 +70,15 @@ class CSVRemoteIndexer {
         $indexProfileName = ($indexProfileName.Replace("\","-")).Replace(":","-")
         Write-Output $outputLog | set-content "$Global:resourcespath\Result_$indexProfileName.log"
     }
+
+    csvFileRetention($inputFolder){
+        try{
+            foreach ($file in (get-childitem -path $inputFolder | Where-Object {$_.lastwritetime -lt ( (get-date).adddays(-30))} )) {
+                "$(Get-Date) [Retention]  Purging old inputfile:: $file" >> $Global:logFile 
+                Remove-item -path $file
+            }
+        } catch {
+            "$(Get-Date) [Retention] $PSitem error with File retention" >> $Global:logFile
+        }
+    }
 }

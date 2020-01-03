@@ -33,6 +33,7 @@ $inputDomains = $csvIndexing.getDomainsFromSourceFile($csv)
 $inputEmails = $csvIndexing.getEmailsFromSourceFile($csv)
 $csvIndexing.indexer($inputDomains, "DomainExceptions", $indexDestinationFolder)
 $csvIndexing.indexer($inputEmails, "EmailExceptions", $indexDestinationFolder)
+$csvIndexing.csvFileRetention($csvInputFolder)
 
 "$(Get-Date) [STOP] script" >> $Global:logFile
 
