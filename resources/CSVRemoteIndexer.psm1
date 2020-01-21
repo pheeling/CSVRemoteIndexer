@@ -45,7 +45,7 @@ class CSVRemoteIndexer {
         $csvIndex = @()
         $i = 0
         $file | where-object {
-            $_.Values -Match "^(?!this_is_the)^(\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b)" | 
+            $_.Values -Match "^(?!this_is_the)^(\b[\u0370-\u03FF\u0400-\u04FFA-Za-z0-9._%+-]+@[_A-Za-z0-9.-]+\.[A-Za-z]{2,}\b)" | 
             foreach-Object{
                 if($_ -ne $false){
                     $csvIndex += [PSCustomObject]@{
