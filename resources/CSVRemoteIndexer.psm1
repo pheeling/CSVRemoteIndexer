@@ -11,7 +11,9 @@ class CSVRemoteIndexer {
     [System.Object] importFile([String] $inputFolder){
         try{
             $file = Get-ChildItem -Path $inputFolder | 
-            Where-Object {($_.Name -match (Get-Date -Format yyyyMMdd) -and ($_.Extension -like ".csv"))}
+            Where-Object {($_.Name -match (Get-Date -Format yyyyMMdd) -and ($_.Extension -like ".csv"))} | 
+            Sort-Object LastWriteTime |
+            Select-Object -last 1
             if ($file.count -gt 1){
                 exit 1
                 "$(Get-Date) [ImportFile] $PSitem too many CSV Files with current date in name" >> $Global:logFile
