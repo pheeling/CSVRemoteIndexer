@@ -81,7 +81,7 @@ class CSVRemoteIndexer {
         try{
             foreach ($file in (get-childitem -path $inputFolder | Where-Object {$_.lastwritetime -lt ( (get-date).adddays(-30))} )) {
                 "$(Get-Date) [Retention]  Purging old inputfile:: $file" >> $Global:logFile 
-                Remove-item -path $file
+                Remove-item -path $file.Fullname
             }
         } catch {
             "$(Get-Date) [Retention] $PSitem error with File retention" >> $Global:logFile
