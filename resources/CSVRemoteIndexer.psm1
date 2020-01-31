@@ -21,7 +21,7 @@ class CSVRemoteIndexer {
             return import-csv -path $file.FullName -Delimiter "," -Header "Values"
         } catch {
             "$(Get-Date) [ImportFile] $PSitem error with File import" >> $Global:logFile
-            return $null
+            exit 1
         }
     }
 
