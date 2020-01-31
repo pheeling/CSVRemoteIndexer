@@ -11,7 +11,7 @@ class CSVRemoteIndexer {
     [System.Object] importFile([String] $inputFolder){
         try{
             $file = Get-ChildItem -Path $inputFolder | 
-            Where-Object {($_.Name -match (Get-Date -Format yyyyMMdd) -and ($_.Extension -like ".csv"))} | 
+            Where-Object {($_.Name -match "BEKBDLP" -and ($_.Extension -like ".csv"))} | 
             Sort-Object LastWriteTime |
             Select-Object -last 1
             if ($file.count -gt 1){
