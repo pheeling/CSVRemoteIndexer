@@ -63,7 +63,7 @@ class CSVRemoteIndexer {
 
     indexer($input, $indexProfileName, $indexDestinationFolder){
         try{
-            $cmdoutput = $input | & 'C:\Program Files\Symantec\DataLossPrevention\Indexers\15.7\Protect\bin\RemoteEDMIndexer.exe' "-profile='$Global:resourcespath\$indexProfileName.edm'" "-ignore_date" "-result='$indexDestinationFolder'" "-verbose" 2>&1
+            $cmdoutput = $input | & 'C:\Program Files\Symantec\DataLossPrevention\Indexers\15.7\Protect\bin\RemoteEDMIndexer.exe' "-profile=$($Global:resourcespath)\$($indexProfileName).edm" "-ignore_date" "-result=$($indexDestinationFolder)" "-verbose" 2>&1
             $outputsplit = $cmdoutput.split("[")
             $outputsplit = $outputsplit.split("],")
             $outputsplit = $outputsplit.split(";")
