@@ -61,9 +61,16 @@ class CSVRemoteIndexer {
         return $csvIndex | convertto-csv -notypeinformation -Delimiter "|" | ForEach-Object {$_ -replace '"',''}
     }
 
-    indexer($input, $indexProfileName, $indexDestinationFolder){
+    indexer($index, $indexProfileName, $indexDestinationFolder){
         try{
-            $cmdoutput = $input | & 'C:\Program Files\Symantec\DataLossPrevention\Indexers\15.7\Protect\bin\RemoteEDMIndexer.exe' "-profile=$($Global:resourcespath)\$($indexProfileName)" "-ignore_date" "-result=$($indexDestinationFolder)" "-verbose" 2>&1
+            $cmdoutput = $null
+
+            if($indexProfileName -like "*.edm"){
+                $remoteIndexer = 'C:\Program Files\Symantec\DataLossPrevention\Indexers\15.7\Protect\bin\RemoteEDMIndexer.exe'
+            }else{ 
+                $remoteIndexer = 'C:\Program Files\Symantec\DataLossPrevention\Indexers\15.7\Protect\bin\RemoteEMDIIndexer.exe'
+            }
+            $cmdoutput = $index | & $remoteIndexer "-profile=$($Global:resourcespath)\$($indexProfileName)" "-ignore_date" "-result=$($indexDestinationFolder)" "-verbose" 2>&1
             $outputsplit = $cmdoutput.split("[")
             $outputsplit = $outputsplit.split("],")
             $outputsplit = $outputsplit.split(";")
