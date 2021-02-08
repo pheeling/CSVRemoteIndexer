@@ -32,7 +32,7 @@ $csv = $csvIndexing.importFile($csvInputFolder)
 $inputDomains = $csvIndexing.getDomainsFromSourceFile($csv)
 $inputEmails = $csvIndexing.getEmailsFromSourceFile($csv)
 $csvIndexing.indexer($inputDomains, "DomainExceptions.edm", $indexDestinationFolder)
-$csvIndexing.indexer($inputDomains, "DomainExceptionsEMDI.emdi", $indexDestinationFolder)
+$csvIndexing.indexer($inputDomains, "DomainExceptionEMDI.emdi", $indexDestinationFolder)
 $csvIndexing.indexer($inputEmails, "EmailExceptions.edm", $indexDestinationFolder)
 $csvIndexing.csvFileRetention($csvInputFolder)
 
