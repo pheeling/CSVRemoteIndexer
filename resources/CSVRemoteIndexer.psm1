@@ -33,7 +33,7 @@ class CSVRemoteIndexer {
             foreach-Object{
                 if($_ -ne $false){
                     $csvIndex += [PSCustomObject]@{
-                        Name = $i
+                        Name = "FOR <"
                         Value = $Matches[0]
                     }
                     $i++
